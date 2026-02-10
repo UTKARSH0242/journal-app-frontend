@@ -59,7 +59,20 @@ This guide will help you deploy your Journal App Frontend to Vercel or Netlify.
     - Value: `YOUR_BACKEND_URL`
 6.  Click **"Deploy site"**.
 
+## Step 2 (Alternative): Deploy to Render (recommended since your backend is here)
+
+1.  Go to [Render Dashboard](https://dashboard.render.com/).
+2.  Click **"New"** -> **"Static Site"**.
+3.  Connect your GitHub account and select `journal-app-frontend`.
+4.  Configure the settings:
+    - **Build Command:** `npm run build`
+    - **Publish Directory:** `dist`
+5.  Click **"Advanced"** -> **"Add Environment Variable"**.
+    - Key: `VITE_API_URL`
+    - Value: `YOUR_BACKEND_URL` (e.g., `https://your-backend-service.onrender.com/journal`)
+6.  Click **"Create Static Site"**.
+
 ## Important Notes
 
--   **CORS:** Ensure your backend allows requests from your deployed frontend domain. You might need to update your Spring Boot CORS configuration to allow the new Vercel/Netlify URL.
--   **HTTPS:** Vercel and Netlify serve via HTTPS. Ensure your backend also supports HTTPS if possible, or you might run into mixed content issues.
+-   **CORS:** Ensure your backend allows requests from your deployed frontend domain. You might need to update your Spring Boot CORS configuration to allow the new frontend URL.
+-   **HTTPS:** Vercel, Netlify, and Render serve via HTTPS. Ensure your backend also supports HTTPS.
