@@ -3,23 +3,24 @@
     justify-content: space-between;
     align-items: center;
     padding: 1rem 2rem;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: var(--shadow-sm);
+    border-bottom: 1px solid var(--glass-border);
     position: sticky;
     top: 0;
     z-index: 100;
+    transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .navbar-brand a {
     font-size: 1.5rem;
     font-weight: 700;
-    background: linear-gradient(90deg, #fff, #e2e2e2);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: var(--primary-color);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
 }
 
 .navbar-menu {
@@ -29,23 +30,48 @@
 }
 
 .navbar-user {
-    color: rgba(255, 255, 255, 0.9);
+    color: var(--text-primary);
     font-weight: 500;
 }
 
 .logout-btn {
     padding: 0.5rem 1.25rem;
-    background: linear-gradient(135deg, #FF6B6B 0%, #EE5D5D 100%);
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
     color: white;
     font-size: 0.9rem;
     width: auto;
     margin-top: 0;
-    box-shadow: 0 2px 5px rgba(255, 107, 107, 0.4);
+    box-shadow: 0 2px 5px rgba(239, 68, 68, 0.3);
     border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s ease;
 }
 
 .logout-btn:hover {
-    background: linear-gradient(135deg, #fa5252 0%, #e03131 100%);
-    box-shadow: 0 4px 8px rgba(255, 107, 107, 0.6);
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    box-shadow: 0 4px 8px rgba(239, 68, 68, 0.5);
     transform: translateY(-1px);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 1rem;
+    }
+
+    .navbar-user {
+        display: none;
+        /* Hide username on small screens to save space */
+    }
+
+    .navbar-menu {
+        gap: 0.5rem;
+    }
+
+    .theme-toggle-btn {
+        margin-left: 0 !important;
+    }
 }

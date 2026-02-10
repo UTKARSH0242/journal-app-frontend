@@ -2,8 +2,9 @@
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
+import { FaBook } from 'react-icons/fa';
 import '../styles/navbar.css';
-import { FaSignOutAlt, FaBook } from 'react-icons/fa';
+import ProfileDropdown from './ProfileDropdown';
 
 const Navbar = () => {
     const { user, logout } = useContext(AuthContext);
@@ -17,14 +18,7 @@ const Navbar = () => {
                 </Link>
             </div>
             <div className="navbar-menu">
-                {user && (
-                    <>
-                        <span className="navbar-user">Hello, {user.username}</span>
-                        <button onClick={logout} className="logout-btn">
-                            <FaSignOutAlt style={{ marginRight: '5px' }} /> Logout
-                        </button>
-                    </>
-                )}
+                {user && <ProfileDropdown />}
             </div>
         </nav>
     );

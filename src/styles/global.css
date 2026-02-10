@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    /* Light Mode (Vibrant Aurora + Indigo) */
+    --bg-body: linear-gradient(135deg, #E0C3FC 0%, #8EC5FC 100%);
+    /* Premium Soft Purple-Blue Gradient */
+    --text-primary: #0f172a;
+    /* Slate-900: Max contrast */
+    --text-secondary: #334155;
+    /* Slate-700 */
+    --glass-bg: rgba(255, 255, 255, 0.95);
+    /* Nearly solid white for pop against gradient */
+    --glass-border: rgba(255, 255, 255, 0.6);
+    /* Brighter border */
+    --glass-blur: blur(20px);
+    --primary-color: #4f46e5;
+    /* Indigo-600 */
+    --input-bg: #ffffff;
+    --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    /* Deeper shadow */
+    --card-bg: rgba(255, 255, 255, 0.95);
+    --input-border: #cbd5e1;
+}
+
+[data-theme='dark'] {
+    /* Dark Mode (Midnight Slate) */
+    --bg-body: #0f172a;
+    /* Slate-900 */
+    --text-primary: #f1f5f9;
+    /* Slate-100 */
+    --text-secondary: #94a3b8;
+    /* Slate-400 */
+    --glass-bg: rgba(30, 41, 59, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-blur: blur(20px);
+    --primary-color: #818cf8;
+    /* Indigo-400 */
+    --input-bg: rgba(15, 23, 42, 0.6);
+    --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+    --card-bg: rgba(30, 41, 59, 0.7);
+    --input-border: rgba(255, 255, 255, 0.1);
+}
+
+body {
+    background: var(--bg-body);
+    font-family: 'Outfit', sans-serif;
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+}

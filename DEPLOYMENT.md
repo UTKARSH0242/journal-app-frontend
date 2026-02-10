@@ -76,3 +76,29 @@ This guide will help you deploy your Journal App Frontend to Vercel or Netlify.
 
 -   **CORS:** Ensure your backend allows requests from your deployed frontend domain. You might need to update your Spring Boot CORS configuration to allow the new frontend URL.
 -   **HTTPS:** Vercel, Netlify, and Render serve via HTTPS. Ensure your backend also supports HTTPS.
+
+## Step 3: Deploying Backend with Redis on Render
+
+Since we added Redis caching, you need a Redis instance on Render.
+
+1.  **Create Redis Service:**
+    -   Go to [Render Dashboard](https://dashboard.render.com/).
+    -   Click **"New"** -> **"Redis"** (or look for **"Key Value"**).
+    -   Render often lists Redis under **"Key Value"**. Select that if "Redis" isn't explicitly shown.
+    -   Name: `journal-redis`
+    -   Region: Same as your backend (Singapore/Oregon etc.)
+    -   Plan: Free (if available) or Starter.
+    -   Click **"Create Redis"**.
+
+2.  **Get Connection Details:**
+    -   Once created, copy the **Internal Redis URL** (e.g., `redis://red-c9...:6379`).
+    -   Or copy the **Host** and **Port** individually.
+
+3.  **Update Backend Environment Variables:**
+    -   Go to your **Backend Service** on Render.
+    -   Click **"Environment"**.
+    -   Add the following variables:
+        -   `REDIS_HOST`: (Your Redis Host, e.g., `red-c9...`)
+        -   `REDIS_PORT`: `6379`
+        -   `REDIS_PASSWORD`: (Your Redis Password, if any)
+    -   Render will verify and redeploy your backend automatically.

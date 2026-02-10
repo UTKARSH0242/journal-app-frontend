@@ -1,7 +1,10 @@
-
 import { useState, useEffect, useContext } from 'react';
 import api from '../services/api';
 import Navbar from '../components/Navbar';
+import LoadingSpinner from '../components/LoadingSpinner';
+import SkeletonEntry from '../components/SkeletonEntry';
+import MoodDashboard from '../components/MoodDashboard';
+import EmailManager from '../components/EmailManager';
 import '../styles/dashboard.css';
 import { FaEdit, FaTrash, FaPlus, FaSave, FaTimes, FaCloudSun } from 'react-icons/fa';
 
@@ -13,10 +16,21 @@ const Dashboard = () => {
     const [error, setError] = useState('');
     const [weather, setWeather] = useState(null);
     const [location, setLocation] = useState('');
+    const [loadingEntries, setLoadingEntries] = useState(true);
+    const [actionLoading, setActionLoading] = useState(false);
 
     useEffect(() => {
-        fetchEntries();
-        fetchWeather();
+        const fetchData = async () => {
+            setLoadingEntries(true);
+            try {
+                await Promise.all([fetchEntries(), fetchWeather()]);
+            } catch (err) {
+                console.error("Error fetching initial data", err);
+            } finally {
+                setLoadingEntries(false);
+            }
+        };
+        fetchData();
     }, []);
 
     const fetchEntries = async () => {
@@ -42,6 +56,8 @@ const Dashboard = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError('');
+        setActionLoading(true);
         try {
             if (editingId) {
                 await api.put(`/journal/id/${editingId}`, { title, content });
@@ -51,9 +67,11 @@ const Dashboard = () => {
             }
             setTitle('');
             setContent('');
-            fetchEntries(); // Refresh list to get new sentiment
+            await fetchEntries(); // Refresh list to get new sentiment
         } catch (error) {
             setError('Failed to save entry');
+        } finally {
+            setActionLoading(false);
         }
     };
 
@@ -65,8 +83,7 @@ const Dashboard = () => {
     };
 
     const [entryToDelete, setEntryToDelete] = useState(null);
-
-    // ... existing hooks
+    const [deleteLoading, setDeleteLoading] = useState(false);
 
     const handleDelete = (entry) => {
         setEntryToDelete(entry);
@@ -74,13 +91,14 @@ const Dashboard = () => {
 
     const confirmDelete = async () => {
         if (!entryToDelete) return;
+        setDeleteLoading(true);
         try {
             await api.delete(`/journal/id/${entryToDelete.id}`);
+            await fetchEntries();
         } catch (error) {
             console.error("Error deleting entry", error);
         } finally {
-            // Always refresh list to ensure UI is in sync with Server
-            fetchEntries();
+            setDeleteLoading(false);
             setEntryToDelete(null);
         }
     };
@@ -102,8 +120,27 @@ const Dashboard = () => {
         }
     };
 
+    if (loadingEntries) {
+        return (
+            <div className="dashboard-container">
+                <Navbar />
+                <div className="content-wrapper">
+                    {/* Skeleton Loader Grid */}
+                    <div className="entries-list">
+                        <h3>Your Journal</h3>
+                        <div className="cards-grid">
+                            {[1, 2, 3, 4, 5, 6].map((n) => (
+                                <SkeletonEntry key={n} />
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     return (
-        <div className="dashboard-container">
+        <div className="dashboard-container fade-in">
             <Navbar />
             <div className="content-wrapper">
 
@@ -142,8 +179,12 @@ const Dashboard = () => {
                             />
                         </div>
                         <div className="form-actions">
-                            <button type="submit">
-                                {editingId ? <><FaSave /> Update</> : <><FaPlus /> Save</>}
+                            <button type="submit" disabled={actionLoading}>
+                                {actionLoading ? (
+                                    <><LoadingSpinner size="small" /> Saving...</>
+                                ) : (
+                                    editingId ? <><FaSave /> Update</> : <><FaPlus /> Save</>
+                                )}
                             </button>
                             {editingId && (
                                 <button type="button" onClick={handleCancel} className="cancel-btn">
@@ -155,11 +196,13 @@ const Dashboard = () => {
                 </div>
 
                 <div className="entries-list">
+                    <MoodDashboard />
+                    <EmailManager />
                     <h3>Your Journal</h3>
                     {entries.length === 0 ? (
                         <p>No entries yet. Start writing!</p>
                     ) : (
-                        <div className="cards-grid">
+                        <div className="cards-grid stagger-fade-in">
                             {entries.map((entry) => (
                                 <div key={entry.id} className="entry-card">
                                     <div>
@@ -202,7 +245,9 @@ const Dashboard = () => {
                         <p>Are you sure you want to delete <strong>{entryToDelete.title}</strong>? This action cannot be undone.</p>
                         <div className="modal-actions">
                             <button onClick={() => setEntryToDelete(null)} className="cancel-btn">Cancel</button>
-                            <button onClick={confirmDelete} className="delete-confirm-btn">Delete</button>
+                            <button onClick={confirmDelete} className="delete-confirm-btn" disabled={deleteLoading}>
+                                {deleteLoading ? <><LoadingSpinner size="small" /> Deleting...</> : 'Delete'}
+                            </button>
                         </div>
                     </div>
                 </div>

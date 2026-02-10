@@ -1,48 +1,45 @@
+/* Modern Auth Styling with Adaptive Glassmorphism */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
 .auth-container {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     padding: 1rem;
-    background: transparent;
-    /* Handled by body */
+    position: relative;
+    overflow: hidden;
 }
 
+/* Glassmorphism Card */
 .auth-box {
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    padding: 3rem;
-    border-radius: 20px;
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    padding: 3.5rem;
+    border-radius: 24px;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--glass-border);
     width: 100%;
-    max-width: 450px;
+    max-width: 480px;
     text-align: center;
-    color: white;
-    animation: fadeIn 0.6s ease-out;
+    position: relative;
+    z-index: 10;
+    color: var(--text-primary);
+    /* Forced inheritance */
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
+/* Typography */
 .auth-box h2 {
     margin-bottom: 2rem;
-    font-size: 2rem;
-    color: white;
-    font-weight: 600;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 2.2rem;
+    color: var(--text-primary) !important;
+    /* Force priority */
+    font-weight: 700;
+    letter-spacing: -0.5px;
 }
 
+/* Modern Input Fields */
 .form-group {
     margin-bottom: 1.5rem;
     text-align: left;
@@ -52,98 +49,120 @@
 .form-group label {
     display: block;
     margin-bottom: 0.5rem;
-    color: rgba(255, 255, 255, 0.9);
+    color: var(--text-secondary);
     font-size: 0.9rem;
-    font-weight: 500;
+    font-weight: 600;
+    padding-left: 4px;
 }
 
-.form-group input[type="text"],
-.form-group input[type="password"],
-.form-group input[type="email"] {
+.form-group input {
     width: 100%;
-    padding: 1rem;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    background: var(--input-bg);
+    border: 2px solid var(--input-border);
+    border-radius: 16px;
     font-size: 1rem;
-    color: white;
-    transition: all 0.3s ease;
-}
-
-.form-group input::placeholder {
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--text-primary);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .form-group input:focus {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.5);
+    background: var(--input-bg);
+    border-color: var(--primary-color);
     outline: none;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+    transform: translateY(-1px);
 }
 
-.checkbox-group label {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    cursor: pointer;
-    font-size: 0.95rem;
+.form-group input::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.7;
 }
 
-.checkbox-group input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    accent-color: var(--secondary-color);
-}
-
-button {
+/* Action Button */
+.auth-box button {
     width: 100%;
-    padding: 1rem;
-    background: linear-gradient(90deg, #00C9FF 0%, #92FE9D 100%);
-    color: #1a202c;
+    padding: 1.1rem;
+    background: linear-gradient(135deg, var(--primary-color) 0%, #4338ca 100%);
+    color: white !important;
+    /* Buttons always white text */
     border: none;
-    border-radius: 10px;
+    border-radius: 16px;
     font-size: 1.1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: all 0.3s ease;
     margin-top: 1.5rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
 }
 
-button:hover {
+.auth-box button:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 201, 255, 0.4);
+    box-shadow: var(--shadow-lg);
+    background: linear-gradient(135deg, #4338ca 0%, #3730a3 100%);
 }
 
-button:active {
+.auth-box button:active:not(:disabled) {
     transform: translateY(0);
 }
 
-.error {
-    background: rgba(229, 62, 62, 0.2);
-    border: 1px solid rgba(229, 62, 62, 0.4);
-    color: #ffd7d7;
-    padding: 0.75rem;
-    border-radius: 8px;
-    margin-bottom: 1.5rem;
-    font-size: 0.9rem;
+.auth-box button:disabled {
+    background: #94a3b8;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+    color: #e2e8f0 !important;
 }
 
+/* Links */
 p {
-    margin-top: 1.5rem;
+    margin-top: 2rem;
     font-size: 0.95rem;
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--text-secondary);
 }
 
 p a {
-    color: #92FE9D;
+    color: var(--primary-color);
     font-weight: 600;
     text-decoration: none;
     transition: color 0.2s;
 }
 
 p a:hover {
-    color: #00C9FF;
+    color: #4338ca;
     text-decoration: underline;
+}
+
+/* Checkbox Style */
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    accent-color: var(--primary-color);
+    background: var(--input-bg);
+    border: 1px solid var(--glass-border);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 480px) {
+    .auth-box {
+        padding: 2rem 1.5rem;
+        max-width: 100%;
+    }
+
+    .auth-box h2 {
+        font-size: 1.75rem;
+    }
 }

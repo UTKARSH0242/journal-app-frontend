@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
             });
 
             if (response.status === 200) {
-                const userData = { username, authdata };
+                const userData = { ...response.data, authdata };
                 localStorage.setItem('user', JSON.stringify(userData));
                 setUser(userData);
                 return true;
