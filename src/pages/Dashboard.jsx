@@ -5,6 +5,7 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import SkeletonEntry from '../components/SkeletonEntry';
 import MoodDashboard from '../components/MoodDashboard';
 import EmailManager from '../components/EmailManager';
+import EmailLogList from '../components/EmailLogList';
 import '../styles/dashboard.css';
 import { FaEdit, FaTrash, FaPlus, FaSave, FaTimes, FaCloudSun } from 'react-icons/fa';
 
@@ -197,6 +198,7 @@ const Dashboard = () => {
 
                 <div className="entries-list">
                     <MoodDashboard />
+                    <EmailLogList />
                     <EmailManager />
                     <h3>Your Journal</h3>
                     {entries.length === 0 ? (
