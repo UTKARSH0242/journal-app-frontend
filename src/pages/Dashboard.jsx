@@ -44,14 +44,34 @@ const Dashboard = () => {
     };
 
     const fetchWeather = async () => {
-        try {
-            const response = await api.get('/user'); // Now returns JSON
-            if (response.data.weather) {
-                setWeather(response.data.weather);
-                setLocation(response.data.location);
+        const fetchWeatherWithLocation = async (lat, lon) => {
+            try {
+                let url = '/user';
+                if (lat && lon) {
+                    url += `?lat=${lat}&lon=${lon}`;
+                }
+                const response = await api.get(url); // Now returns JSON
+                if (response.data.weather) {
+                    setWeather(response.data.weather);
+                    setLocation(response.data.location);
+                }
+            } catch (error) {
+                console.error("Error fetching weather", error);
             }
-        } catch (error) {
-            console.error("Error fetching weather", error);
+        };
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    fetchWeatherWithLocation(position.coords.latitude, position.coords.longitude);
+                },
+                (error) => {
+                    console.error("Geolocation error:", error);
+                    fetchWeatherWithLocation(); // Fallback to default
+                }
+            );
+        } else {
+            fetchWeatherWithLocation(); // Fallback if geolocation not supported
         }
     }
 

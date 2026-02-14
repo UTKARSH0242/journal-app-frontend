@@ -38,6 +38,22 @@ const MoodDashboard = () => {
         fetchMoodData();
     }, []);
 
+    const [summary, setSummary] = useState('');
+    const [summaryLoading, setSummaryLoading] = useState(false);
+
+    const fetchWeeklySummary = async () => {
+        setSummaryLoading(true);
+        try {
+            const response = await api.get('/journal/weekly-summary');
+            setSummary(response.data.summary);
+        } catch (error) {
+            console.error("Failed to fetch summary", error);
+            setSummary("Failed to load summary. Please try again.");
+        } finally {
+            setSummaryLoading(false);
+        }
+    };
+
     if (loading) return <div style={{ padding: '1rem', textAlign: 'center' }}>Loading insights...</div>;
 
     if (moodData.length === 0) return (
@@ -62,7 +78,37 @@ const MoodDashboard = () => {
             boxShadow: 'var(--shadow-sm)',
             marginBottom: '2rem'
         }}>
-            <h3 style={{ marginBottom: '1rem', color: 'var(--text-primary)' }}>Mood Analytics</h3>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '10px' }}>
+                <h3 style={{ margin: 0, color: 'var(--text-primary)' }}>Mood Analytics</h3>
+                <button
+                    onClick={fetchWeeklySummary}
+                    disabled={summaryLoading}
+                    className="summary-btn"
+                    style={{
+                        padding: '0.6rem 1.2rem',
+                        borderRadius: '12px',
+                        border: 'none',
+                        background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)',
+                        color: 'white',
+                        cursor: summaryLoading ? 'wait' : 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        fontSize: '0.9rem',
+                        fontWeight: '600',
+                        boxShadow: '0 4px 12px rgba(99, 102, 241, 0.3)',
+                        transition: 'all 0.3s ease',
+                        opacity: summaryLoading ? 0.8 : 1
+                    }}
+                >
+                    {summaryLoading ? (
+                        <>Generating...</>
+                    ) : (
+                        <>✨ Weekly Summary</>
+                    )}
+                </button>
+            </div>
+
             <div style={{ width: '100%', height: 300 }}>
                 <ResponsiveContainer>
                     <PieChart>
@@ -91,6 +137,24 @@ const MoodDashboard = () => {
                     </PieChart>
                 </ResponsiveContainer>
             </div>
+
+            {summary && (
+                <div className="weekly-summary" style={{
+                    marginTop: '2rem',
+                    padding: '1.5rem',
+                    background: 'rgba(99, 102, 241, 0.1)',
+                    borderRadius: '12px',
+                    borderLeft: '4px solid #6366f1',
+                    animation: 'fadeIn 0.5s ease'
+                }}>
+                    <h4 style={{ margin: '0 0 0.8rem 0', color: '#6366f1', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        ✨ AI Weekly Insights
+                    </h4>
+                    <p style={{ lineHeight: '1.6', color: 'var(--text-primary)', margin: 0, whiteSpace: 'pre-line' }}>
+                        {summary}
+                    </p>
+                </div>
+            )}
         </div>
     );
 };
