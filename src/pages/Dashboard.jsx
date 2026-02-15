@@ -232,7 +232,7 @@ const Dashboard = () => {
                                             <div className="title-row">
                                                 <h4>{entry.title}</h4>
                                                 <span className="sentiment-emoji" title={entry.sentiment}>
-                                                    {getSentimentEmoji(entry.sentiment)}
+                                                    {entry.sentimentEmojis ? entry.sentimentEmojis : getSentimentEmoji(entry.sentiment)}
                                                 </span>
                                             </div>
                                             <span className="entry-date">{new Date(entry.date).toLocaleDateString()}</span>
